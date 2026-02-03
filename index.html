@@ -7094,7 +7094,7 @@ Monitoring Kinerja" required></textarea>
          option.textContent = bidang;
          bidangSelect.appendChild(option);
        });
-     })});
+     });
 
      // Load PJ options from data
      callGAS('getDashboardData').then(function(data) {
@@ -9468,7 +9468,7 @@ Monitoring Kinerja" required></textarea>
       }).catch(function(error) { console.error(error); })
         hidePopup();
         showError('Error!', error.message);
-      })});
+      });
       
       return false;
     }
@@ -9787,7 +9787,7 @@ Monitoring Kinerja" required></textarea>
           }).catch(function(error) { console.error(error); })
             hidePopup();
             showError('Error!', error.message);
-          })});
+          });
         }
       );
     }
@@ -10280,7 +10280,7 @@ Monitoring Kinerja" required></textarea>
       }).catch(function(error) { console.error(error); })
         hidePopup();
         showError('Error!', 'Gagal memuat daftar bidang: ' + error.message);
-      })});
+      });
     }
 
     function loadSubKegiatanList() {
@@ -10318,7 +10318,7 @@ Monitoring Kinerja" required></textarea>
       }).catch(function(error) { console.error(error); })
         hidePopup();
         showError('Error!', 'Gagal memuat daftar sub kegiatan: ' + error.message);
-      })});
+      });
     }
 
     function handleAddBidang(e) {
@@ -10345,7 +10345,7 @@ Monitoring Kinerja" required></textarea>
       }).catch(function(error) { console.error(error); })
         hidePopup();
         showError('Error!', error.message);
-      })});
+      });
 
       return false;
     }
@@ -10535,7 +10535,7 @@ Monitoring Kinerja" required></textarea>
           }
         });
         showError('Error!', 'Gagal memuat daftar bidang: ' + error.message);
-      })});
+      });
     }
 
     function updateFormInputs() {
@@ -10581,7 +10581,7 @@ Monitoring Kinerja" required></textarea>
               }
             });
           }
-        })});
+        });
       }
 
       // Update sub kegiatan input in kinerja form
