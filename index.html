@@ -10630,8 +10630,8 @@ Monitoring Kinerja" required></textarea>
           filteredList = subKegiatanList.filter(function(item) {
             // Use normalizedBidang if available, otherwise normalize
             var itemBidang = item.normalizedBidang || (item.bidang || '').toLowerCase().replace(/\s+/g, ' ').trim();
-            // Exact match or startsWith for precision
-            return itemBidang === normalizedFilter || itemBidang.startsWith(normalizedFilter);
+            // Only exact match for precision
+            return itemBidang === normalizedFilter;
           });
         }
 
@@ -10684,7 +10684,6 @@ Monitoring Kinerja" required></textarea>
         console.error('Error loading sub kegiatan:', error);
         showError('Error!', 'Gagal memuat data sub kegiatan: ' + error.message);
       });
-    }
     }
 
     // Load references when input section is shown
