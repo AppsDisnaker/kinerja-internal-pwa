@@ -79,61 +79,64 @@ npm start
 ```
 Buka http://localhost:3000/api/health untuk memastikan server berjalan.
 
-## Langkah 3: Deploy ke Railway
+## Langkah 3: Deploy ke Vercel (Direkomendasikan)
 
-### 3.1 Buat Akun Railway
-1. Buka https://railway.app/
+### 3.1 Buat Akun Vercel
+1. Buka https://vercel.com/
 2. Login dengan GitHub
-3. Klik "New Project" → "Deploy from GitHub repo"
+3. Klik "Add New..." → "Project"
+4. Import repository GitHub Anda
 
-### 3.2 Setup Environment Variables di Railway
-1. Di Railway dashboard, pilih project Anda
-2. Klik "Variables" tab
+### 3.2 Setup Environment Variables di Vercel
+1. Di Vercel dashboard, pilih project Anda
+2. Klik "Settings" → "Environment Variables"
 3. Tambahkan variable satu per satu:
-   - `SPREADSHEET_ID`
-   - `SHEET_USERS`
-   - `SHEET_DATA_KINERJA`
-   - `SHEET_REFERENSI`
-   - `GOOGLE_SERVICE_ACCOUNT_EMAIL`
-   - `GOOGLE_PRIVATE_KEY` (copy-paste seluruh isi dari field `private_key` di file JSON, termasuk baris -----BEGIN/END PRIVATE KEY-----)
+   - `SPREADSHEET_ID` → value: ID Spreadsheet Anda
+   - `SHEET_USERS` → value: Users
+   - `SHEET_DATA_KINERJA` → value: Data Kinerja
+   - `SHEET_REFERENSI` → value: Data Referensi
+   - `GOOGLE_SERVICE_ACCOUNT_EMAIL` → value: email dari file JSON
+   - `GOOGLE_PRIVATE_KEY` → value: copy-paste ISI PENUH dari field `private_key` di file JSON (termasuk -----BEGIN PRIVATE KEY----- dan -----END PRIVATE KEY-----)
+
+**Penting untuk GOOGLE_PRIVATE_KEY:**
+- Pastekan tanpa escape `\n` (Vercel akan otomatis menangani)
+- Contoh:
+  ```
+  GOOGLE_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----
+  MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQ...
+  ...isi lengkap private key...
+  -----END PRIVATE KEY-----
+  ```
 
 ### 3.3 Deploy
-1. Railway akan otomatis deploy dari GitHub
-2. Tunggu sampai deployment selesai
-3. Copy URL dari Railway (misalnya: https://kinerja-internal-api.up.railway.app)
+1. Klik "Deploy"
+2. Vercel akan otomatis build dan deploy
+3. Tunggu sampai selesai (biasanya 1-2 menit)
+4. Copy URL dari Vercel (misalnya: https://kinerja-internal-api.vercel.app)
 
 ## Langkah 4: Update Frontend
 
 Edit file `index.html`, ubah `API_BASE_URL`:
 ```javascript
-const API_BASE_URL = 'https://kinerja-internal-api.up.railway.app/api';
+const API_BASE_URL = 'https://kinerja-internal-api.vercel.app/api';
 ```
 
-## Alternatif Deploy ke Vercel
+## Alternatif Deploy ke Railway
 
-Jika lebih memilih Vercel:
+### 4.1 Buat Akun Railway
+1. Buka https://railway.app/
+2. Login dengan GitHub
+3. Klik "New Project" → "Deploy from GitHub repo"
 
-1. Buat file `vercel.json`:
-```json
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/server.js"
-    }
-  ]
-}
-```
+### 4.2 Setup Environment Variables di Railway
+1. Di Railway dashboard, pilih project Anda
+2. Klik "Variables" tab
+3. Tambahkan variable satu per satu (sama seperti di Vercel)
 
-2. Install Vercel CLI: `npm i -g vercel`
-3. Deploy: `vercel --prod`
+### 4.3 Deploy
+1. Railway akan otomatis deploy dari GitHub
+2. Tunggu sampai deployment selesai
+3. Copy URL dari Railway
 
 ## Troubleshooting
 
@@ -142,11 +145,21 @@ Jika lebih memilih Vercel:
 
 ### Error: "Spreadsheet not found"
 - Pastikan SPREADSHEET_ID benar (ambil dari URL Spreadsheet)
+- Format: `https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit`
 
 ### Error: "private_key" format salah
 - Pastikan `GOOGLE_PRIVATE_KEY` dalam format yang benar
-- Gunakan tanda kutip ganda di awal dan akhir
-- Jika di Railway, tidak perlu escape \n
+- Di Vercel: tanpa escape `\n`, paste langsung
+- Di Railway: tanpa escape `\n`, paste langsung
 
 ### Error: CORS
 - Pastikan sudah menginstall dan menggunakan `cors` middleware
+- Server.js sudah include `app.use(cors())`
+
+### Error: Timeout di Vercel
+- Vercel memiliki limit execution time 10 detik untuk hobby tier
+- Jika sering timeout, pertimbangkan Railway atau Render
+
+### Error: Function crashed di Vercel
+- Cek logs di Vercel dashboard → "Function" tab
+- Pastikan semua environment variables sudah diisi dengan benar
