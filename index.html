@@ -16,24 +16,37 @@
   <link rel="manifest" href="./manifest.json">
   
   <script>
-    // Konfigurasi API - Ubah URL ini sesuai dengan backend yang di-deploy
+    // Konfigurasi API
     // Untuk development lokal: http://localhost:3000/api
-    // Untuk production: https://your-backend-url.railway.app/api
+    // Untuk production: https://your-backend-url.railway.app/api atau Vercel
+    
+    // Perhatian: Jika melihat error 404, backend belum di-deploy!
+    // Ikuti panduan di DEPLOY.md untuk deploy backend ke Vercel/Railway
     const API_BASE_URL = 'https://kinerja-internal-api.up.railway.app/api';
+    
     function callGAS(action, params = {}) {
       const url = API_BASE_URL + '?action=' + action;
       const formBody = Object.keys(params).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(typeof params[key] === 'object' ? JSON.stringify(params[key]) : params[key])).join('&');
       return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formBody })
-        .then(r => r.json())
+        .then(r => {
+          if (!r.ok) {
+            throw new Error('Server tidak tersedia. Pastikan backend sudah di-deploy ke Vercel/Railway.');
+          }
+          return r.json();
+        })
         .then(result => {
           if (result.success) {
             return result.data !== undefined ? result.data : result;
           } else {
-            throw new Error(result.message || 'API Error occurred');
+            throw new Error(result.message || 'Terjadi kesalahan pada server');
           }
         })
         .catch(error => {
-          console.error('callGAS Error:', error);
+          console.error('API Error:', error);
+          // Tampilkan pesan error yang lebih ramah ke user
+          if (typeof showError === 'function') {
+            showError('Koneksi Gagal', error.message + '\n\nSilakan deploy backend terlebih dahulu.\nLihat DEPLOY.md untuk panduan.');
+          }
           throw error;
         });
     }
