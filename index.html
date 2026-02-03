@@ -6897,7 +6897,7 @@ Monitoring Kinerja" required></textarea>
         hidePopup();
         console.log('Dashboard data loaded successfully');
 
-      }).catch(function(error) {
+      }).catch(function(error) { console.error(error); })
         console.error('Error loading dashboard:', error);
         hidePopup();
         showError('Error Memuat Dashboard', 'Gagal mengambil data dashboard: ' + error.message);
