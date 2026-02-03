@@ -16,7 +16,10 @@
   <link rel="manifest" href="./manifest.json">
   
   <script>
-    const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbzuUbrBZDYfAguGncHt1258oLIx0RGtli5tC71IPDufJQm6HJLW2Q1F00UbZZ1rBsCD2w/exec';
+    // Konfigurasi API - Ubah URL ini sesuai dengan backend yang di-deploy
+    // Untuk development lokal: http://localhost:3000/api
+    // Untuk production: https://your-backend-url.railway.app/api
+    const API_BASE_URL = 'https://kinerja-internal-api.up.railway.app/api';
     function callGAS(action, params = {}) {
       const url = API_BASE_URL + '?action=' + action;
       const formBody = Object.keys(params).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(typeof params[key] === 'object' ? JSON.stringify(params[key]) : params[key])).join('&');
