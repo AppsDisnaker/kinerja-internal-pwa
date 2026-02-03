@@ -13,6 +13,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Serve favicon as SVG (browsers will accept this)
+app.get('/favicon.ico', (req, res) => {
+  res.set('Content-Type', 'image/svg+xml');
+  res.send(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23059669' width='100' height='100' rx='20'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='white'>&#128202;</text></svg>`);
+});
+
 // Google Sheets Configuration
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '';
 const SHEET_USERS = process.env.SHEET_USERS || 'Users';
